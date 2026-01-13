@@ -48,11 +48,11 @@ const About = () => {
                    
                         <div className="grid grid-cols-2 gap-4">
                             <div className="tech-card hoverable">
-                                <div className="text-3xl font-bold gradient-text">3+</div>
+                                <div className="text-3xl font-bold gradient-text">0+</div>
                                 <div className="text-gray-400 text-sm">Years Experience</div>
                             </div>
                             <div className="tech-card hoverable">
-                                <div className="text-3xl font-bold gradient-text">20+</div>
+                                <div className="text-3xl font-bold gradient-text">3+</div>
                                 <div className="text-gray-400 text-sm">Projects Completed</div>
                             </div>
                         </div>
