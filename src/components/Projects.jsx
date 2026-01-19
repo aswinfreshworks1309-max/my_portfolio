@@ -25,8 +25,8 @@ const Projects = () => {
             </div>
             <div className="max-w-7xl mx-auto relative z-10">
                 <div className="text-center mb-16">
-                    <span className="text-indigo-400 font-medium">MY WORK</span>
-                    <h2 className="text-4xl md:text-5xl font-bold mt-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>Featured Projects</h2>
+          
+                    <h2 className="text-4xl md:text-5xl font-bold mt-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>My Projects</h2>
                 </div>
                 <div id="projectsGrid">
                     {projects.map((project, index) => {
