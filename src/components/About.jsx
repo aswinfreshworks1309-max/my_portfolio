@@ -29,7 +29,6 @@ const About = () => {
             </div>
             <div className="max-w-6xl mx-auto relative z-10">
                 <div className="text-center mb-16">
-                    <span className="text-indigo-400 font-medium">GET TO KNOW ME</span>
                     <h2 className="text-4xl md:text-5xl font-bold mt-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>About Me</h2>
                 </div>
                 <div className="grid md:grid-cols-2 gap-12 items-center">

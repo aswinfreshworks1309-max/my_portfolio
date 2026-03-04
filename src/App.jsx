@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
+import Highlights from './components/Highlights';
 import Skills from './components/Skills';
 import Projects from './components/Projects';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import CustomCursor from './components/CustomCursor';
 import { defaultConfig } from './data';
+import LifeSkills from './components/LifeSkills';
 
 function App() {
   const [config, setConfig] = useState(defaultConfig);
@@ -40,6 +42,10 @@ function App() {
       <Navbar />
       <Hero />
       <About />
+      <div className="section-divider"></div>
+      <Highlights />
+      <div className="section-divider"></div>
+      <LifeSkills />
       <div className="section-divider"></div>
       <Skills />
       <div className="section-divider"></div>

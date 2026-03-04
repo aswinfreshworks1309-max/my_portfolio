@@ -255,7 +255,8 @@ body {
   height: 150%;
   top: -25%;
   left: -25%;
-  background: radial-gradient(
+  background:
+    radial-gradient(
       ellipse at 20% 30%,
       rgba(99, 102, 241, 0.15) 0%,
       transparent 50%
@@ -303,7 +304,9 @@ body {
   top: 0;
   left: 0;
   animation: scanLine 6s linear infinite;
-  box-shadow: 0 0 20px rgba(0, 217, 255, 0.8), 0 0 40px rgba(0, 217, 255, 0.4);
+  box-shadow:
+    0 0 20px rgba(0, 217, 255, 0.8),
+    0 0 40px rgba(0, 217, 255, 0.4);
   opacity: 0.5;
 }
 
@@ -340,7 +343,8 @@ body {
   height: 200%;
   top: -50%;
   left: -50%;
-  background: radial-gradient(
+  background:
+    radial-gradient(
       circle at 15% 25%,
       rgba(0, 217, 255, 0.15) 0%,
       transparent 40%
@@ -367,8 +371,18 @@ body {
       rgba(168, 85, 247, 0.08) 50%,
       transparent 100%
     );
-  background-size: 200% 200%, 200% 200%, 200% 200%, 2px 100%, 100% 2px;
-  background-position: 0% 0%, 100% 100%, 50% 50%, 0 0, 0 0;
+  background-size:
+    200% 200%,
+    200% 200%,
+    200% 200%,
+    2px 100%,
+    100% 2px;
+  background-position:
+    0% 0%,
+    100% 100%,
+    50% 50%,
+    0 0,
+    0 0;
   animation: sectionBgMove 25s ease-in-out infinite;
 }
 
@@ -389,7 +403,8 @@ body {
 .geometric-pattern {
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(
+  background-image:
+    radial-gradient(
       circle at 20% 80%,
       rgba(0, 217, 255, 0.03) 0%,
       transparent 50%
@@ -413,7 +428,8 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  background-image: linear-gradient(
+  background-image:
+    linear-gradient(
       30deg,
       transparent 48%,
       rgba(0, 217, 255, 0.02) 49%,
@@ -434,17 +450,29 @@ body {
       rgba(0, 217, 255, 0.02) 51%,
       transparent 52%
     );
-  background-size: 100px 100px, 100px 100px, 100px 100px;
-  background-position: 0 0, 0 0, 0 0;
+  background-size:
+    100px 100px,
+    100px 100px,
+    100px 100px;
+  background-position:
+    0 0,
+    0 0,
+    0 0;
   animation: patternShift 40s linear infinite;
 }
 
 @keyframes patternShift {
   0% {
-    background-position: 0 0, 0 0, 0 0;
+    background-position:
+      0 0,
+      0 0,
+      0 0;
   }
   100% {
-    background-position: 100px 100px, -100px -100px, 50px 50px;
+    background-position:
+      100px 100px,
+      -100px -100px,
+      50px 50px;
   }
 }
 
@@ -628,95 +656,30 @@ body {
   }
 }
 
-/* Skill Circle Progress */
-.skill-circle {
-  position: relative;
-  width: 140px;
-  height: 140px;
+/* Highlights Section */
+.highlight-card {
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  background: rgba(255, 255, 255, 0.03);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
 
-.skill-circle svg {
-  transform: rotate(-90deg);
+.highlight-card:hover {
+  transform: translateY(-10px);
+  background: rgba(255, 255, 255, 0.07);
+  box-shadow:
+    0 30px 60px rgba(0, 0, 0, 0.4),
+    0 0 20px rgba(99, 102, 241, 0.2);
+  border-color: rgba(99, 102, 241, 0.4);
 }
 
-.skill-circle-bg {
-  fill: none;
-  stroke: rgba(99, 102, 241, 0.2);
-  stroke-width: 10;
+.highlight-card img {
+  filter: grayscale(30%) brightness(80%);
+  transition: all 0.7s ease;
 }
 
-.skill-circle-progress {
-  fill: none;
-  stroke-width: 10;
-  stroke-linecap: round;
-  stroke-dasharray: 314;
-  stroke-dashoffset: 314;
-  transition: stroke-dashoffset 1.5s ease;
-}
-
-/* Different colors based on skill level */
-.skill-circle.beginner .skill-circle-progress {
-  stroke: #ff6b9d;
-  filter: drop-shadow(0 0 10px rgba(255, 107, 157, 0.5));
-}
-
-.skill-circle.intermediate .skill-circle-progress {
-  stroke: #ffc671;
-  filter: drop-shadow(0 0 10px rgba(255, 198, 113, 0.5));
-}
-
-.skill-circle.advanced .skill-circle-progress {
-  stroke: #6366f1;
-  filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.5));
-}
-
-.skill-circle.expert .skill-circle-progress {
-  stroke: #22d3ee;
-  filter: drop-shadow(0 0 10px rgba(34, 211, 238, 0.5));
-}
-
-.skill-circle.visible .skill-circle-progress {
-  animation: circleProgress 1.5s ease forwards;
-}
-
-@keyframes circleProgress {
-  to {
-    stroke-dashoffset: var(--progress);
-  }
-}
-
-/* Skill Badge */
-.skill-badge {
-  position: absolute;
-  top: -10px;
-  right: -10px;
-  padding: 4px 10px;
-  border-radius: 20px;
-  font-size: 0.65rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
-
-.skill-badge.beginner {
-  background: linear-gradient(135deg, #ff6b9d, #ff8fab);
-  color: white;
-}
-
-.skill-badge.intermediate {
-  background: linear-gradient(135deg, #ffc671, #ffd493);
-  color: #1a1a35;
-}
-
-.skill-badge.advanced {
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
-  color: white;
-}
-
-.skill-badge.expert {
-  background: linear-gradient(135deg, #22d3ee, #06b6d4);
-  color: white;
+.highlight-card:hover img {
+  filter: grayscale(0%) brightness(100%);
+  transform: scale(1.1);
 }
 
 /* Tech Stack Cards - Icon Style */
@@ -826,7 +789,9 @@ body {
 .project-card:hover {
   transform: translateY(-8px);
   border-color: var(--accent-primary);
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3), 0 0 40px rgba(99, 102, 241, 0.3);
+  box-shadow:
+    0 30px 60px rgba(0, 0, 0, 0.3),
+    0 0 40px rgba(99, 102, 241, 0.3);
 }
 
 @media (max-width: 768px) {
@@ -1209,4 +1174,22 @@ body {
 
 .light-theme .about-image-container {
   box-shadow: 0 20px 40px rgba(0, 164, 252, 0.15);
+}
+
+/* Typing Cursor Animation */
+.typing-cursor {
+  display: inline-block;
+  color: var(--accent-primary);
+  font-weight: bold;
+  animation: blink 0.8s infinite;
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
 }

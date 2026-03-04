@@ -1,8 +1,12 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { defaultConfig, techStack, heroBackgroundIcons } from "../data";
 
 const Hero = () => {
     const nameRef = useRef(null);
+    const [titleIndex, setTitleIndex] = useState(0);
+    const [displayText, setDisplayText] = useState("");
+    const [isDeleting, setIsDeleting] = useState(false);
+    const [typingSpeed, setTypingSpeed] = useState(150);
 
     useEffect(() => {
         if (nameRef.current) {
@@ -18,6 +22,31 @@ const Hero = () => {
             });
         }
     }, []);
+
+    useEffect(() => {
+        const handleTyping = () => {
+            const fullTitle = defaultConfig.hero_titles[titleIndex];
+
+            if (isDeleting) {
+                setDisplayText(fullTitle.substring(0, displayText.length - 1));
+                setTypingSpeed(100);
+            } else {
+                setDisplayText(fullTitle.substring(0, displayText.length + 1));
+                setTypingSpeed(150);
+            }
+
+            if (!isDeleting && displayText === fullTitle) {
+                // Pause for 3 seconds as requested ("3 secentecs")
+                setTimeout(() => setIsDeleting(true), 3000);
+            } else if (isDeleting && displayText === "") {
+                setIsDeleting(false);
+                setTitleIndex((prev) => (prev + 1) % defaultConfig.hero_titles.length);
+            }
+        };
+
+        const timer = setTimeout(handleTyping, typingSpeed);
+        return () => clearTimeout(timer);
+    }, [displayText, isDeleting, titleIndex, typingSpeed]);
 
     // Generate background particles from both techStack and heroBackgroundIcons
     const backgroundParticles = [...techStack, ...heroBackgroundIcons, ...techStack, ...heroBackgroundIcons].map((tech, index) => {
@@ -110,7 +139,7 @@ const Hero = () => {
                             border: "1px solid rgba(99, 102, 241, 0.3)",
                         }}
                     >
-                        👋 Welcome to my portfolio
+                        👋 Hi there,
                     </span>
                 </div>
                 <h1
@@ -119,10 +148,11 @@ const Hero = () => {
                 >
                     <span className="hero-name-text" ref={nameRef}></span>
                 </h1>
-                <div className="text-reveal mb-6">
+                <div className="text-reveal mb-6 min-h-[40px]">
                     <span className="text-2xl md:text-3xl gradient-text font-semibold">
-                        {defaultConfig.hero_title}
+                        {displayText}
                     </span>
+                    <span className="typing-cursor ml-1 animate-blink text-[40px]">|</span>
                 </div>
                 <p className="text-lg md:text-xl text-gray-400 mb-10 max-w-2xl mx-auto">
                     {defaultConfig.hero_tagline}

@@ -6,7 +6,7 @@ const Navbar = () => {
         <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-4 backdrop-blur-md bg-opacity-80 transition-all duration-500 border-b border-white border-opacity-10" id="mainNav">
             <div className="max-w-7xl mx-auto flex justify-between items-center">
                 <div className="text-2xl font-bold gradient-text" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-                    &lt;Dev/&gt;
+                    &lt; Aswin /&gt;
                 </div>
                 <div className="flex items-center gap-8">
                     <div className="hidden md:flex gap-8">
