@@ -7,6 +7,7 @@ import college from './assets/college.png';
 import Skills from "./components/Skills";
 import uniqueTalks from "./assets/unique_talks.png";
 import product from './assets/product.png';
+import squad from './assets/squad power presentation.jpg'
 
 export const defaultConfig = {
   hero_name: " I'm Aswin",
@@ -164,16 +165,6 @@ export const projects = [
     image: ecommerceImg,
   },
   {
-    id: 2,
-    title: "Bus Ticket Booking Website",
-    description:
-      "A fullstack website with HTML, CSS, JavaScript, FastAPI,PostgreSQL.",
-    tags: ["HTML", "CSS", "JavaScript", "FastAPI", "PostgreSQL"],
-    github: "https://github.com/aswinfreshworks1309-max/Full_Stack_Project.git",
-    live: "https://locotranz-git-main-aswins-projects-7ca69fa9.vercel.app/",
-    image: busTicketImg,
-  },
-  {
     id: 3,
     title: "Text to Voice convertor",
     description:
@@ -182,6 +173,16 @@ export const projects = [
     github: "https://github.com/aswinfreshworks1309-max/Voice_Commander.git",
     live: "https://aswinfreshworks1309-max.github.io/Voice_Commander/",
     image: voiceCommanderImg,
+  },
+  {
+    id: 2,
+    title: "Bus Ticket Booking Website",
+    description:
+      "A fullstack website with HTML, CSS, JavaScript, FastAPI,PostgreSQL.",
+    tags: ["HTML", "CSS", "JavaScript", "FastAPI", "PostgreSQL"],
+    github: "https://github.com/aswinfreshworks1309-max/Full_Stack_Project.git",
+    live: "https://locotranz-git-main-aswins-projects-7ca69fa9.vercel.app/",
+    image: busTicketImg,
   },
 ];
 
@@ -223,10 +224,10 @@ export const highlightsData = [
 export const lifeSkills = [
   {
     id: "Project 1",
-    name: "Sqaud power presentation",
+    name: "Squad power presentation",
     description:
       "The Squad Power presentation was my first stage presentation, and it was the best experience I have gained. This project helped me overcome my stage fear and build confidence while speaking in front of an audience.",
-    image: product,
+    image: squad,
     Skill: "Confidence",
   },
   {

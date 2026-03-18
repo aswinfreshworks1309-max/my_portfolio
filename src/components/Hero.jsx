@@ -161,40 +161,11 @@ const Hero = () => {
                     <a href="#projects" className="magnetic-btn hoverable">
                         <span>View My Work</span>
                     </a>
-                    <a
-                        href="#contact"
-                        className="px-8 py-4 rounded-full border border-gray-600 hover:border-indigo-500 transition-all duration-300 hoverable"
-                    >
+                    <a href="#contact" className="px-8 py-4 rounded-full border border-gray-600 hover:border-indigo-500 transition-all duration-300 hoverable">
                         Get In Touch
                     </a>
                 </div>
-                <div className="scroll-indicator">
-                    <svg
-                        width="30"
-                        height="50"
-                        viewBox="0 0 30 50"
-                        fill="none"
-                        className="mx-auto opacity-50"
-                    >
-                        <rect
-                            x="1"
-                            y="1"
-                            width="28"
-                            height="48"
-                            rx="14"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                        />
-                        <circle
-                            cx="15"
-                            cy="15"
-                            r="5"
-                            fill="currentColor"
-                            className="animate-pulse"
-                        />
-                    </svg>
-                    <p className="text-sm text-gray-500 mt-2">Scroll to explore</p>
-                </div>
+   
             </div>
         </section>
     );

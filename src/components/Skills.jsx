@@ -29,13 +29,13 @@ const Skills = () => {
                     <h2 className="text-4xl md:text-5xl font-bold mt-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>Skills & Technologies</h2>
                 </div>
                 <div>
-                    <h3 className="text-2xl font-bold mb-12 text-center">Tech Skills</h3>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+                     
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 justify-center">
                         {techStack.map((tech, index) => (
                             <TechCard key={index} tech={tech} index={index} isVisible={isVisible} />
                         ))}
                     </div>
-                </div>
+                </div> 
             </div>
             <div className="section-divider"></div>
         </section>
