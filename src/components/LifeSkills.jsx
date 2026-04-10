@@ -36,14 +36,14 @@ const LifeSkills = () => {
                 <div className="floating-orb orb-3"></div>
             </div>
 
-            <h2 className="text-center text-5xl font-bold">Life Skills</h2>
+            <h2 className="text-center text-3xl md:text-5xl font-bold">Life Skills</h2>
 
 
-            <div className="min-h-screen flex items-center justify-center p-8 gap-10">
+            <div className="min-h-screen grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 items-start justify-items-center p-6 sm:p-8">
                 {lifeSkills.map((skills, index) => (
 
                     <div key={index}
-                        className={`w-96 bg-[#182850] rounded-2xl overflow-hidden border border-zinc-800 transition-all duration-500 cursor-pointer ${hoveredIndex === index ? "shadow-2xl shadow-blue-500 -translate-y-2 border-amber-500/30" : ""}`}
+                        className={`w-full max-w-sm sm:max-w-md md:w-96 bg-[#182850] rounded-2xl overflow-hidden border border-zinc-800 transition-all duration-500 cursor-pointer ${hoveredIndex === index ? "shadow-2xl shadow-blue-500 -translate-y-2 border-amber-500/30" : ""}`}
                         onMouseEnter={() => setHoveredIndex(index)}
                         onMouseLeave={() => setHoveredIndex(null)}
                     >
