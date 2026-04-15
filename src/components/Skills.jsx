@@ -29,13 +29,13 @@ const Skills = () => {
                     <h2 className="text-4xl md:text-5xl font-bold mt-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>Skills & Technologies</h2>
                 </div>
                 <div>
-                     
+
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 justify-center">
                         {techStack.map((tech, index) => (
                             <TechCard key={index} tech={tech} index={index} isVisible={isVisible} />
                         ))}
                     </div>
-                </div> 
+                </div>
             </div>
             <div className="section-divider"></div>
         </section>
@@ -45,8 +45,16 @@ const Skills = () => {
 const TechCard = ({ tech, index, isVisible }) => {
     return (
         <div className={`tech-card hoverable stagger-item ${isVisible ? 'visible' : ''}`} style={{ animationDelay: `${index * 0.05}s` }}>
-            <div className="tech-icon" dangerouslySetInnerHTML={{ __html: tech.icon }} />
-            <div className="font-semibold text-sm text-center">{tech.name}</div>
+            {tech.image ? (
+                <img
+                    src={tech.image}
+                    alt={tech.name}
+                    className="mx-auto h-12 w-12 object-contain tech-icon"
+                />
+            ) : (
+                <div className="tech-icon" dangerouslySetInnerHTML={{ __html: tech.icon }} />
+            )}
+            <div className="font-semibold text-sm text-center ">{tech.name}</div>
         </div>
     );
 };
