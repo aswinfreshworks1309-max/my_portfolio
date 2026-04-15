@@ -38,7 +38,7 @@ function App() {
 
   return (
     <div className="portfolio-wrapper overflow-y-auto h-full" id="portfolioWrapper">
-      <CustomCursor />
+      {/* <CustomCursor /> */}
       <Navbar />
       <Hero />
       <About />
