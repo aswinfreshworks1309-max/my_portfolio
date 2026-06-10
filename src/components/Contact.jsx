@@ -1,10 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react';
+import emailjs from '@emailjs/browser';
 import { defaultConfig } from '../data';
 
 const Contact = () => {
+    // Get these from your EmailJS dashboard (https://www.emailjs.com).
+    // Email Services -> Service ID | Email Templates -> Template ID | Account -> Public Key.
+    // Set the template's "To Email" to aswinrajasekar20@gmail.com so messages land in that inbox.
+    const EMAILJS_SERVICE_ID = 'service_2xr9l5k';
+    const EMAILJS_TEMPLATE_ID = 'template_x1qrh7u';
+    const EMAILJS_PUBLIC_KEY = 'HTIQ2VH21slGC36vo';
+
     const sectionRef = useRef(null);
     const [isVisible, setIsVisible] = useState(false);
     const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+    const [status, setStatus] = useState({ state: 'idle', message: '' });
 
     useEffect(() => {
         const observer = new IntersectionObserver(([entry]) => {
@@ -18,12 +27,39 @@ const Contact = () => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Handle form submission logic here
-        console.log('Form submitted:', formData);
-        alert('Thank you for your message! I will get back to you soon.');
-        setFormData({ name: '', email: '', message: '' });
+
+        if (
+            EMAILJS_SERVICE_ID === 'YOUR_SERVICE_ID' ||
+            EMAILJS_TEMPLATE_ID === 'YOUR_TEMPLATE_ID' ||
+            EMAILJS_PUBLIC_KEY === 'YOUR_PUBLIC_KEY'
+        ) {
+            setStatus({ state: 'error', message: 'Email is not configured yet. Add your EmailJS credentials.' });
+            return;
+        }
+
+        setStatus({ state: 'sending', message: 'Sending your message...' });
+
+        try {
+            await emailjs.send(
+                EMAILJS_SERVICE_ID,
+                EMAILJS_TEMPLATE_ID,
+                {
+                    from_name: formData.name,
+                    from_email: formData.email,
+                    message: formData.message,
+                    subject: `New portfolio message from ${formData.name}`,
+                },
+                { publicKey: EMAILJS_PUBLIC_KEY }
+            );
+
+            setStatus({ state: 'success', message: 'Thank you for your message! I will get back to you soon.' });
+            setFormData({ name: '', email: '', message: '' });
+        } catch (error) {
+            const detail = error?.text || error?.message || 'Please try again.';
+            setStatus({ state: 'error', message: `Something went wrong: ${detail}` });
+        }
     };
 
     return (
@@ -142,10 +178,20 @@ const Contact = () => {
                             </div>
                             <button
                                 type="submit"
-                                className="w-full py-4 px-6 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold rounded-xl transition-all hover:shadow-lg hover:shadow-indigo-500/25 active:scale-95"
+                                disabled={status.state === 'sending'}
+                                className="w-full py-4 px-6 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold rounded-xl transition-all hover:shadow-lg hover:shadow-indigo-500/25 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
                             >
-                                Send Message
+                                {status.state === 'sending' ? 'Sending...' : 'Send Message'}
                             </button>
+
+                            {status.state !== 'idle' && status.state !== 'sending' && (
+                                <p
+                                    className={`text-sm text-center ${status.state === 'success' ? 'text-green-400' : 'text-red-400'}`}
+                                    role="status"
+                                >
+                                    {status.message}
+                                </p>
+                            )}
                         </form>
                     </div>
                 </div>

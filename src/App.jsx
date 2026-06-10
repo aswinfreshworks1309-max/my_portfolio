@@ -10,6 +10,7 @@ import Footer from './components/Footer';
 import CustomCursor from './components/CustomCursor';
 import { defaultConfig } from './data';
 import LifeSkills from './components/LifeSkills';
+import WhatsAppButton from './components/WhatsAppButton';
 
 function App() {
   const [config, setConfig] = useState(defaultConfig);
@@ -53,6 +54,7 @@ function App() {
       <div className="section-divider"></div>
       <Contact />
       <Footer />
+      <WhatsAppButton />
     </div>
   );
 }
