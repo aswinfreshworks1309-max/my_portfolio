@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { defaultConfig } from '../data';
-import profile from '../assets/profile.jpg';
+import profile from '../assets/profile.min.jpg';
 const About = () => {
     const sectionRef = useRef(null);
     const [isVisible, setIsVisible] = useState(false);
@@ -21,13 +21,14 @@ const About = () => {
     }, []);
 
     return (
-        <section id="about" className={`py-24 px-6 section-animate relative ${isVisible ? 'visible' : ''}`} ref={sectionRef}>
+        <section id="about" className={`min-h-screen flex flex-col px-6 section-animate relative ${isVisible ? 'visible' : ''}`} ref={sectionRef}>
             <div className="section-bg">
                 <div className="geometric-pattern"></div>
                 <div className="floating-orb orb-1"></div>
                 <div className="floating-orb orb-2"></div>
             </div>
-            <div className="max-w-6xl mx-auto relative z-10">
+            <div className="flex-1 flex items-center justify-center relative z-10 w-full py-24">
+            <div className="max-w-6xl mx-auto w-full">
                 <div className="text-center mb-16">
                     <h2 className="text-4xl md:text-5xl font-bold mt-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>About Me</h2>
                 </div>
@@ -36,8 +37,12 @@ const About = () => {
                         <div className="about-image-container hoverable shadow-2xl">
                             <img
                                 src={profile}
-                                alt="Aswin"
+                                alt="Aswin Rajasekar — Full Stack Developer"
                                 className="about-image"
+                                loading="lazy"
+                                decoding="async"
+                                width="1280"
+                                height="720"
                             />
                             <div className="image-border-glow"></div>
                         </div>
@@ -53,6 +58,7 @@ const About = () => {
                         </div>
                     </div>
                 </div>
+            </div>
             </div>
             <div className="section-divider"></div>
         </section>

@@ -1,14 +1,10 @@
-import ecommerceImg from "./assets/e-commerce.png";
-import busTicketImg from "./assets/Bus-ticket.png";
-import voiceCommanderImg from "./assets/voice commander.png";
-import schoolImg from "./assets/school.png";
+import ecommerceImg from "./assets/e-commerce.min.jpg";
+import busTicketImg from "./assets/bus-ticket.min.jpg";
+import voiceCommanderImg from "./assets/voice-commander.min.jpg";
+import schoolImg from "./assets/school.min.jpg";
 import typescriptImg from "./assets/TypeScript image.png";
-import fresworks from "./assets/batch_05.jpeg";
-import college from "./assets/college.png";
-import Skills from "./components/Skills";
-import uniqueTalks from "./assets/unique_talks.png";
-import product from "./assets/product.png";
-import squad from "./assets/squad power presentation.jpg";
+import fresworks from "./assets/batch_05.min.jpg";
+import college from "./assets/college.min.jpg";
 import postgres from './assets/postgres.png'
 
 export const defaultConfig = {
@@ -29,13 +25,6 @@ export const defaultConfig = {
   text_color: "#f0f4f8",
   primary_action: "#00d9ff",
   secondary_action: "#a855f7",
-  highlights_text: `Hello, my name is Aswin, and I am originally from Thoothukudi. I completed my schooling at Government Higher Secondary School, Thuraipakkam, Chennai. At present, I am learning Full Stack Web Development at Freshworks STS Software Academy, where I am building strong technical skills in modern web technologies.
-
-Coming to my family background, my father works at an MRF tyre showroom, and my mother is a homemaker. I have one younger brother who is currently studying in the 12th standard at Mary Immaculate Matriculation Higher Secondary School.
-
-During my college years, I received the merit award for two consecutive years, which reflects my dedication and consistent academic performance. However, due to my family situation, I decided to start working after my studies in order to support my family. This experience helped me become more responsible, disciplined, and motivated to build a stable career in the technology field.
-
-Currently, I am fully focused on improving my full-stack development skills and preparing myself for opportunities where I can contribute effectively while continuing to learn and grow.`,
 };
 
 export const techStack = [
@@ -260,32 +249,5 @@ export const highlightsData = [
     icon: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm4 8H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm4 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V9h2v2zm4 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V9h2v2z"/></svg>',
     color: "#fbbf24",
     image: schoolImg,
-  },
-];
-
-export const lifeSkills = [
-  {
-    id: "Project 1",
-    name: "Squad power presentation",
-    description:
-      "The Squad Power presentation was my first stage presentation, and it was the best experience I have gained. This project helped me overcome my stage fear and build confidence while speaking in front of an audience.",
-    image: squad,
-    Skill: "Confidence",
-  },
-  {
-    id: "Project 2",
-    name: "Product Building Challenge",
-    description:
-      "The product-building challenge required us, as a squad, to create a product from scratch. In this project, I learned how to handle team conflicts effectively. It also helped me improve my collaboration and problem-solving skills. Overall, it was a valuable learning experience.",
-    Skill: "Conflict Resolution",
-    image: product,
-  },
-  {
-    id: "Project 3",
-    name: "Unique Talks",
-    description:
-      "I did a presentation on the topic of false memory. It was an interesting and informative experience that helped me understand the subject more deeply. It also gave me more confidence while speaking in front of others. Overall, it was very useful for improving my presentation skills.",
-    Skill: "Presentation Skills",
-    image: uniqueTalks,
   },
 ];

@@ -7,6 +7,88 @@ body {
   box-sizing: border-box;
 }
 
+/* ---- Custom Spinning React Cursor ---- */
+/* Hide the native cursor everywhere (overrides cursor:pointer) when active. */
+body.custom-cursor-active,
+body.custom-cursor-active * {
+  cursor: none !important;
+}
+
+.cursor-react,
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 99999;
+  will-change: transform;
+}
+
+/* The spinning React logo that tracks the pointer. */
+.cursor-react {
+  width: 34px;
+  height: 34px;
+  color: #00d8ff; /* React cyan in dark theme; path fill = currentColor */
+  filter: drop-shadow(0 0 6px rgba(0, 216, 255, 0.75));
+}
+/* Light theme → recolor to the TypeScript / TSX blue. */
+.light-theme .cursor-react {
+  color: #3178c6;
+  filter: drop-shadow(0 0 6px rgba(49, 120, 198, 0.6));
+}
+.cursor-react-scale {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.25s ease;
+}
+.cursor-react-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  animation: cursorSpin 4s linear infinite;
+}
+@keyframes cursorSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Grows the logo when hovering an interactive element. */
+.cursor-react.is-hover .cursor-react-scale {
+  transform: scale(1.6);
+}
+
+/* Trailing ring that lags behind the logo. */
+.cursor-ring {
+  width: 56px;
+  height: 56px;
+  border: 2px solid rgba(0, 216, 255, 0.45);
+  border-radius: 50%;
+  transition:
+    width 0.3s ease,
+    height 0.3s ease,
+    border-color 0.3s ease,
+    background-color 0.3s ease;
+}
+.cursor-ring.is-hover {
+  width: 78px;
+  height: 78px;
+  border-color: rgba(168, 85, 247, 0.8);
+  background-color: rgba(168, 85, 247, 0.08);
+}
+.cursor-ring.is-click {
+  width: 40px;
+  height: 40px;
+  border-color: rgba(0, 216, 255, 0.9);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cursor-react-img {
+    animation: none;
+  }
+}
+
 :root {
   --bg-primary: #0a0e27;
   --bg-secondary: #151a35;
@@ -96,7 +178,10 @@ body {
   color: var(--text-primary);
   min-height: 100%;
   width: 100%;
-  overflow-x: hidden;
+  /* `clip` keeps horizontal overflow hidden WITHOUT making this a scroll
+     container / sticky containing block (which `hidden` would, breaking
+     position: sticky for the pinned Projects section). */
+  overflow-x: clip;
 }
 
 
@@ -542,6 +627,655 @@ body {
   transform: scale(1.1);
 }
 
+/* Journey — Horizontal Road Map */
+.journey-scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 0.5rem;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(168, 85, 247, 0.5) transparent;
+}
+
+.journey-scroll::-webkit-scrollbar {
+  height: 6px;
+}
+.journey-scroll::-webkit-scrollbar-thumb {
+  background: rgba(168, 85, 247, 0.5);
+  border-radius: 999px;
+}
+
+/* Fixed-size canvas the road + milestones are laid out on (1 unit = 1px,
+   matching the SVG viewBox so percentage-positioned nodes sit on the road). */
+.journey-track {
+  position: relative;
+  width: 1280px;
+  height: 500px;
+  margin: 0 auto;
+}
+
+.journey-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* The asphalt: a thick dark road that follows the winding path. */
+.road-asphalt {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.06);
+  stroke-width: 26;
+  stroke-linecap: round;
+}
+
+/* A glowing coloured layer that "draws" itself in when the section scrolls
+   into view. */
+.road-progress {
+  fill: none;
+  stroke: url(#roadGrad);
+  stroke-width: 6;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 8px rgba(168, 85, 247, 0.5));
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 2.2s ease;
+}
+.journey-track.drawn .road-progress {
+  stroke-dashoffset: 0;
+}
+
+/* The dashed centre lane marking, animated so the road feels alive. */
+.road-dash {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.8);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-dasharray: 2 22;
+  animation: roadLane 1.6s linear infinite;
+}
+@keyframes roadLane {
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+
+/* A pulsing light that travels along the road. */
+.journey-traveler {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow:
+    0 0 10px 3px rgba(0, 217, 255, 0.9),
+    0 0 22px 8px rgba(168, 85, 247, 0.6);
+  offset-path: path("M 0,240 C 60,290 110,290 160,290 C 280,290 372,190 492,190 C 612,190 705,290 825,290 C 945,290 1000,190 1120,190 C 1180,190 1240,240 1280,240");
+  offset-rotate: 0deg;
+  animation: journeyTravel 9s linear infinite;
+}
+@keyframes journeyTravel {
+  from {
+    offset-distance: 0%;
+  }
+  to {
+    offset-distance: 100%;
+  }
+}
+
+/* Milestone anchored on the road. Centered on its road point via negative
+   margins (not transform) so the stagger-item entrance animation — which
+   animates `transform` — doesn't knock the marker off the road. */
+.journey-node {
+  position: absolute;
+  width: 48px;
+  margin-left: -24px;
+  margin-top: -24px;
+  z-index: 2;
+}
+.journey-node:hover {
+  z-index: 5;
+}
+
+.journey-marker {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0a0e27;
+  border: 3px solid var(--accent, #6366f1);
+  box-shadow: 0 0 0 4px rgba(10, 14, 39, 0.9), 0 0 18px var(--accent, #6366f1);
+  margin: 0 auto;
+  cursor: pointer;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.journey-node:hover .journey-marker {
+  transform: scale(1.15);
+}
+
+.journey-step {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--accent, #6366f1);
+  color: #0a0e27;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.journey-marker-icon {
+  width: 24px;
+  height: 24px;
+  color: var(--accent, #6366f1);
+  display: flex;
+}
+.journey-marker-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Milestone card — positioned above or below its marker. */
+.journey-card-h {
+  position: absolute;
+  left: 50%;
+  width: 210px;
+  transform: translateX(-50%);
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(20, 26, 53, 0.85);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  transition: all 0.45s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.journey-node--above .journey-card-h {
+  bottom: 100px;
+}
+.journey-node--below .journey-card-h {
+  top: 100px;
+}
+
+/* Connector tying the card to the marker. */
+.journey-card-h::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  width: 2px;
+  height: 76px;
+  transform: translateX(-50%);
+  background: linear-gradient(var(--accent, #6366f1), transparent);
+}
+.journey-node--above .journey-card-h::after {
+  bottom: -76px;
+  background: linear-gradient(transparent, var(--accent, #6366f1));
+}
+.journey-node--below .journey-card-h::after {
+  top: -76px;
+}
+
+.journey-node:hover .journey-card-h {
+  border-color: color-mix(in srgb, var(--accent, #6366f1) 55%, transparent);
+  box-shadow:
+    0 24px 50px rgba(0, 0, 0, 0.5),
+    0 0 22px color-mix(in srgb, var(--accent, #6366f1) 35%, transparent);
+}
+.journey-node--above:hover .journey-card-h {
+  transform: translateX(-50%) translateY(-6px);
+}
+.journey-node--below:hover .journey-card-h {
+  transform: translateX(-50%) translateY(6px);
+}
+
+.journey-card-media {
+  height: 96px;
+  overflow: hidden;
+}
+.journey-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(25%) brightness(82%);
+  transition: all 0.7s ease;
+}
+.journey-node:hover .journey-card-media img {
+  filter: grayscale(0%) brightness(100%);
+  transform: scale(1.08);
+}
+
+.journey-card-body {
+  padding: 0.85rem 1rem 1rem;
+}
+.journey-card-body p {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .road-dash,
+  .journey-traveler {
+    animation: none;
+  }
+  .road-progress {
+    transition: none;
+    stroke-dashoffset: 0;
+  }
+}
+
+/* ---- Journey responsive: road on desktop, vertical timeline on mobile/tablet ---- */
+.journey-desktop {
+  display: none;
+}
+.journey-mobile {
+  display: block;
+}
+@media (min-width: 1024px) {
+  .journey-desktop {
+    display: block;
+  }
+  .journey-mobile {
+    display: none;
+  }
+}
+
+.journey-mobile {
+  position: relative;
+  max-width: 460px;
+  margin: 0 auto;
+  padding: 0.5rem 0;
+}
+/* The vertical road line. */
+.journey-mobile::before {
+  content: "";
+  position: absolute;
+  left: 22px;
+  top: 10px;
+  bottom: 10px;
+  width: 3px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #00d9ff, #a855f7, #00ffaa);
+  opacity: 0.5;
+}
+
+.jm-item {
+  position: relative;
+  padding-left: 66px;
+  margin-bottom: 1.75rem;
+}
+.jm-item:last-child {
+  margin-bottom: 0;
+}
+
+.jm-marker {
+  position: absolute;
+  left: 0;
+  top: 4px;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0a0e27;
+  border: 3px solid var(--accent, #6366f1);
+  box-shadow: 0 0 0 4px rgba(10, 14, 39, 0.9), 0 0 16px var(--accent, #6366f1);
+  z-index: 2;
+}
+.jm-step {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent, #6366f1);
+  color: #0a0e27;
+  font-size: 10px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.jm-icon {
+  width: 22px;
+  height: 22px;
+  color: var(--accent, #6366f1);
+  display: flex;
+}
+.jm-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.jm-card {
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(20, 26, 53, 0.75);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.3);
+}
+.jm-media {
+  height: 150px;
+  overflow: hidden;
+}
+.jm-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.jm-body {
+  padding: 0.9rem 1.1rem 1.1rem;
+}
+.jm-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.35rem;
+}
+.jm-desc {
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: #cbd5e1;
+}
+
+/* Life Skills — Scroll-Pinned Sequence */
+.lifeskill-scroll {
+  position: relative;
+}
+
+/* Sticky stage that stays fixed in the viewport while the tall section above
+   scrolls past, advancing one project at a time. */
+.lifeskill-pin {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  padding: 4rem 1.5rem;
+  overflow: hidden;
+}
+
+.lifeskill-head {
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.lifeskill-stage {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1100px;
+  display: grid;
+  grid-template-columns: 1fr auto 1.1fr;
+  align-items: center;
+  gap: clamp(1.5rem, 4vw, 4rem);
+}
+
+/* ---- Image side ---- */
+.lifeskill-stage-media {
+  position: relative;
+  height: min(56vh, 460px);
+  border-radius: 1.5rem;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+  background: #0b1020;
+}
+.lifeskill-stage-img {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: translateX(45px) scale(1.06);
+  transition: opacity 0.7s ease, transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.lifeskill-stage-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.9) saturate(1.05);
+}
+.lifeskill-stage-img.is-active {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+}
+
+/* ---- Progress line with dots (center) ---- */
+.lifeskill-progress {
+  position: relative;
+  align-self: center;
+  height: min(46vh, 360px);
+  width: 40px;
+  display: flex;
+  justify-content: center;
+}
+.lifeskill-progress-track,
+.lifeskill-progress-fill {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 3px;
+  transform: translateX(-50%);
+  border-radius: 999px;
+}
+.lifeskill-progress-track {
+  height: 100%;
+  background: rgba(255, 255, 255, 0.12);
+}
+.lifeskill-progress-fill {
+  height: calc(var(--p, 0) * 100%);
+  background: linear-gradient(180deg, #00a4fc, #a855f7);
+  box-shadow: 0 0 12px rgba(0, 164, 252, 0.6);
+  transition: height 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.lifeskill-dot {
+  position: absolute;
+  left: 50%;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: #0a0e27;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.lifeskill-dot:nth-of-type(1) {
+  top: 0%;
+}
+.lifeskill-dot:nth-of-type(2) {
+  top: 50%;
+}
+.lifeskill-dot:nth-of-type(3) {
+  top: 100%;
+}
+.lifeskill-dot-num {
+  font-size: 9px;
+  font-weight: 700;
+  color: transparent;
+  transition: color 0.3s ease;
+}
+.lifeskill-dot.is-done {
+  border-color: #a855f7;
+  background: #a855f7;
+}
+.lifeskill-dot.is-active {
+  width: 30px;
+  height: 30px;
+  border-color: #00a4fc;
+  background: #0a0e27;
+  box-shadow: 0 0 0 5px rgba(0, 164, 252, 0.18), 0 0 18px rgba(0, 164, 252, 0.6);
+}
+.lifeskill-dot.is-active .lifeskill-dot-num {
+  color: #00a4fc;
+}
+
+/* ---- Content side ---- */
+.lifeskill-stage-content {
+  position: relative;
+  min-height: min(46vh, 360px);
+}
+.lifeskill-stage-panel {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  opacity: 0;
+  transform: translateY(34px);
+  transition: opacity 0.6s ease, transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+  pointer-events: none;
+}
+.lifeskill-stage-panel.is-active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.lifeskill-tag {
+  color: #f59e0b;
+  font-size: 0.75rem;
+  font-family: "Space Grotesk", monospace;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
+}
+.lifeskill-title {
+  color: #fff;
+  font-size: clamp(1.6rem, 3vw, 2.25rem);
+  font-weight: 700;
+  line-height: 1.15;
+  font-family: "Space Grotesk", sans-serif;
+  margin-bottom: 1rem;
+}
+.lifeskill-desc {
+  color: #cbd5e1;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  max-width: 38ch;
+}
+.lifeskill-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-family: "Space Grotesk", monospace;
+  color: #e2e8f0;
+  background: rgba(0, 164, 252, 0.12);
+  border: 1px solid rgba(0, 164, 252, 0.4);
+  backdrop-filter: blur(6px);
+  align-self: flex-start;
+}
+.lifeskill-badge-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #00a4fc;
+  box-shadow: 0 0 8px #00a4fc;
+  animation: lifeskillPulse 1.8s ease-in-out infinite;
+}
+@keyframes lifeskillPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.5);
+    opacity: 0.6;
+  }
+}
+
+/* ---- Mobile: stack image / dots / content, line turns horizontal ---- */
+@media (max-width: 860px) {
+  .lifeskill-stage {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .lifeskill-stage-media {
+    height: 34vh;
+    order: 1;
+  }
+  .lifeskill-progress {
+    order: 2;
+    width: 100%;
+    height: 40px;
+  }
+  .lifeskill-progress-track,
+  .lifeskill-progress-fill {
+    left: 0;
+    top: 50%;
+    width: 100%;
+    height: 3px;
+    transform: translateY(-50%);
+  }
+  .lifeskill-progress-fill {
+    width: calc(var(--p, 0) * 100%);
+    height: 3px;
+  }
+  .lifeskill-dot:nth-of-type(1) {
+    top: 50%;
+    left: 0%;
+  }
+  .lifeskill-dot:nth-of-type(2) {
+    top: 50%;
+    left: 50%;
+  }
+  .lifeskill-dot:nth-of-type(3) {
+    top: 50%;
+    left: 100%;
+  }
+  .lifeskill-stage-content {
+    order: 3;
+    min-height: 30vh;
+    text-align: center;
+  }
+  .lifeskill-stage-panel {
+    align-items: center;
+  }
+  .lifeskill-desc {
+    margin-inline: auto;
+  }
+  .lifeskill-badge {
+    align-self: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lifeskill-stage-img,
+  .lifeskill-stage-panel {
+    transition: opacity 0.3s ease;
+    transform: none;
+  }
+  .lifeskill-badge-dot {
+    animation: none;
+  }
+}
+
 /* Tech Stack Cards - Icon Style */
 .tech-card {
   background: linear-gradient(
@@ -688,6 +1422,346 @@ body {
 
 .project-image:hover img {
   transform: scale(1.1);
+}
+
+/* ===== Projects — Scroll-Pinned Showcase ===== */
+.proj-scroll {
+  position: relative;
+}
+.proj-pin {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  /* Extra top padding clears the fixed navbar so the title/counter aren't hidden. */
+  padding: 6.5rem clamp(1.5rem, 5vw, 5rem) clamp(2rem, 5vh, 3.5rem);
+  overflow: hidden;
+}
+
+.proj-head {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1rem;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+}
+.proj-counter {
+  display: flex;
+  align-items: baseline;
+  gap: 0.3rem;
+  font-family: "Space Grotesk", sans-serif;
+  line-height: 1;
+}
+.proj-counter-now {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--accent-primary);
+}
+.proj-counter-sep,
+.proj-counter-total {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+/* ---- Stage: image left, content right ---- */
+.proj-stage {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  align-items: center;
+  gap: clamp(2rem, 5vw, 5rem);
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* ---- Image side ---- */
+.proj-media {
+  position: relative;
+}
+.proj-frame {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  /* Match the screenshots' ~16:9 ratio so the card hugs the image (no bars). */
+  aspect-ratio: 16 / 9;
+  max-height: 64vh;
+  border-radius: 22px;
+  overflow: hidden;
+  perspective: 1400px; /* 3D depth for the flip-in of each image */
+  border: 1px solid rgba(99, 102, 241, 0.25);
+  box-shadow:
+    0 30px 70px rgba(0, 0, 0, 0.45),
+    0 0 40px rgba(99, 102, 241, 0.18);
+  background: #0b1020;
+  animation: projFloat 7s ease-in-out infinite;
+}
+@keyframes projFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+/* Images are stacked and opaque; z-index (set in JS) puts the active one on
+   top and the previous one just beneath, so the flicker reveals it. */
+.proj-img {
+  position: absolute;
+  inset: 0;
+  opacity: 1;
+  will-change: opacity, transform;
+}
+.proj-img img {
+  width: 100%;
+  height: 100%;
+  /* Frame aspect (~16:9) matches the screenshots, so `cover` fills it edge to
+     edge (no transparent bars that would reveal the stacked image beneath)
+     with only a tiny crop — no over-zoom. */
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Flip-in — the new image card swings in with a half rotation, replacing the
+   previous one (which sits just beneath until it's covered). */
+.proj-img.flip {
+  animation: projFlipIn 0.7s cubic-bezier(0.4, 0, 0.2, 1) both;
+  transform-origin: center center;
+  backface-visibility: hidden;
+}
+@keyframes projFlipIn {
+  0% {
+    opacity: 0;
+    transform: rotateY(-90deg) scale(0.94);
+  }
+  45% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: rotateY(0deg) scale(1);
+  }
+}
+
+/* ---- Content side ---- */
+.proj-content {
+  position: relative;
+  min-height: min(55vh, 460px);
+}
+/* opacity + translateY are scroll-linked via JS (see .proj-img note). */
+.proj-panel {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  will-change: opacity, transform;
+}
+.proj-label {
+  color: var(--accent-primary);
+  font-family: "Space Grotesk", monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+.proj-title {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(1.8rem, 3.5vw, 2.7rem);
+  font-weight: 700;
+  line-height: 1.1;
+  color: #fff;
+  margin-bottom: 1.1rem;
+}
+.proj-desc {
+  color: #94a3b8;
+  font-size: 1rem;
+  line-height: 1.7;
+  max-width: 46ch;
+  margin-bottom: 1.5rem;
+}
+.proj-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+.proj-tags span {
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  background: rgba(99, 102, 241, 0.18);
+  color: #a5b4fc;
+  border: 1px solid rgba(99, 102, 241, 0.25);
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.proj-panel.is-active .proj-tags span {
+  opacity: 1;
+  transform: none;
+  transition-delay: var(--d, 0s);
+}
+.proj-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.6s ease 0.4s, transform 0.6s ease 0.4s;
+}
+.proj-panel.is-active .proj-actions {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---- Vertical progress rail ---- */
+.proj-progress {
+  position: absolute;
+  left: clamp(0.75rem, 3vw, 2.5rem);
+  top: 50%;
+  transform: translateY(-50%);
+  height: min(40vh, 320px);
+  width: 30px;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+}
+.proj-progress-track,
+.proj-progress-fill {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 3px;
+  transform: translateX(-50%);
+  border-radius: 999px;
+}
+.proj-progress-track {
+  height: 100%;
+  background: rgba(255, 255, 255, 0.14);
+}
+.proj-progress-fill {
+  height: 0; /* height set per scroll-frame by JS for a smooth fill */
+  background: linear-gradient(180deg, var(--accent-primary), var(--accent-secondary));
+  box-shadow: 0 0 12px rgba(0, 217, 255, 0.6);
+}
+.proj-dot {
+  position: absolute;
+  left: 50%;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--bg-primary);
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.proj-dot span {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  color: transparent;
+  transition: color 0.3s ease;
+}
+.proj-dot:nth-of-type(1) {
+  top: 0%;
+}
+.proj-dot:nth-of-type(2) {
+  top: 50%;
+}
+.proj-dot:nth-of-type(3) {
+  top: 100%;
+}
+.proj-dot.is-done {
+  border-color: var(--accent-secondary);
+  background: var(--accent-secondary);
+}
+.proj-dot.is-active {
+  width: 34px;
+  height: 34px;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 5px rgba(0, 217, 255, 0.16), 0 0 18px rgba(0, 217, 255, 0.6);
+}
+.proj-dot.is-active span {
+  color: var(--accent-primary);
+}
+
+/* ---- Mobile: stack image over content, hide rail ---- */
+@media (max-width: 860px) {
+  .proj-stage {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .proj-progress {
+    display: none;
+  }
+  .proj-frame {
+    aspect-ratio: 16 / 9;
+    max-height: 40vh;
+  }
+  .proj-content {
+    min-height: 44vh;
+    text-align: center;
+  }
+  .proj-panel {
+    align-items: center;
+  }
+  .proj-desc {
+    margin-inline: auto;
+  }
+  .proj-tags,
+  .proj-actions {
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .proj-frame {
+    animation: none;
+  }
+  .proj-img.flip {
+    animation: none;
+  }
+  .proj-img,
+  .proj-panel {
+    transition: opacity 0.3s ease;
+    transform: none;
+    clip-path: none;
+  }
+}
+
+/* ---- Projects: light theme ---- */
+.light-theme .proj-title {
+  color: var(--text-primary);
+}
+.light-theme .proj-desc {
+  color: #475569;
+}
+.light-theme .proj-counter-sep,
+.light-theme .proj-counter-total {
+  color: rgba(15, 23, 42, 0.4);
+}
+.light-theme .proj-progress-track {
+  background: rgba(15, 23, 42, 0.15);
+}
+.light-theme .proj-dot {
+  background: #ffffff;
+  border-color: rgba(15, 23, 42, 0.25);
 }
 
 /* Photo Upload Area */

@@ -9,7 +9,6 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 import CustomCursor from './components/CustomCursor';
 import { defaultConfig } from './data';
-import LifeSkills from './components/LifeSkills';
 import WhatsAppButton from './components/WhatsAppButton';
 
 function App() {
@@ -38,15 +37,13 @@ function App() {
   }, []);
 
   return (
-    <div className="portfolio-wrapper overflow-y-auto h-full" id="portfolioWrapper">
-      {/* <CustomCursor /> */}
+    <div className="portfolio-wrapper" id="portfolioWrapper">
+      <CustomCursor />
       <Navbar />
       <Hero />
       <About />
       <div className="section-divider"></div>
       <Highlights />
-      <div className="section-divider"></div>
-      <LifeSkills />
       <div className="section-divider"></div>
       <Skills />
       <div className="section-divider"></div>

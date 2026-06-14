@@ -5,7 +5,7 @@ const Footer = () => {
     return (
         <footer className="py-8 px-6 border-t border-gray-800">
             <div className="max-w-6xl mx-auto text-center">
-                <p className="text-gray-500">
+                <p className="text-gray-400">
                     © {date} <span className="gradient-text">Aswin</span>. All rights reserved.
                 </p>
             </div>
