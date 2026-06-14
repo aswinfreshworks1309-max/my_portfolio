@@ -6,9 +6,9 @@ const Contact = () => {
     // Get these from your EmailJS dashboard (https://www.emailjs.com).
     // Email Services -> Service ID | Email Templates -> Template ID | Account -> Public Key.
     // Set the template's "To Email" to aswinrajasekar20@gmail.com so messages land in that inbox.
-    const EMAILJS_SERVICE_ID = 'service_2xr9l5k';
-    const EMAILJS_TEMPLATE_ID = 'template_x1qrh7u';
-    const EMAILJS_PUBLIC_KEY = 'HTIQ2VH21slGC36vo';
+    const EMAILJS_SERVICE_ID: string = 'service_2xr9l5k';
+    const EMAILJS_TEMPLATE_ID: string = 'template_x1qrh7u';
+    const EMAILJS_PUBLIC_KEY: string = 'HTIQ2VH21slGC36vo';
 
     const sectionRef = useRef(null);
     const [isVisible, setIsVisible] = useState(false);
@@ -174,7 +174,7 @@ const Contact = () => {
                                     value={formData.message}
                                     onChange={handleChange}
                                     placeholder="Your message here..."
-                                    rows="4"
+                                    rows={4}
                                     className="w-full bg-[#0a0e27]/50 border border-gray-700 rounded-xl px-4 py-3 outline-none focus:border-indigo-500 transition-colors placeholder:text-gray-400 resize-none"
                                     required
                                 ></textarea>

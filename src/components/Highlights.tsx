@@ -84,7 +84,7 @@ const Highlights = () => {
                         <div
                             key={index}
                             className={`jm-item stagger-item ${isVisible ? 'visible' : ''}`}
-                            style={{ animationDelay: `${index * 0.12}s`, '--accent': item.color }}
+                            style={{ animationDelay: `${index * 0.12}s`, '--accent': item.color } as React.CSSProperties}
                         >
                             <span className="jm-marker">
                                 <span className="jm-step">{index + 1}</span>
@@ -113,7 +113,7 @@ const JourneyStop = ({ item, index, stop, isVisible }) => {
     return (
         <div
             className={`journey-node journey-node--${stop.placement} stagger-item ${isVisible ? 'visible' : ''}`}
-            style={{ left: stop.left, top: stop.top, animationDelay: `${index * 0.18}s`, '--accent': item.color }}
+            style={{ left: stop.left, top: stop.top, animationDelay: `${index * 0.18}s`, '--accent': item.color } as React.CSSProperties}
         >
             <span className="journey-marker">
                 <span className="journey-step">{index + 1}</span>

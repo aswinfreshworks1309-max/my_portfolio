@@ -143,7 +143,7 @@ const Projects = () => {
                                 <div
                                     key={p.id}
                                     className="proj-img"
-                                    ref={(el) => (mediaRefs.current[i] = el)}
+                                    ref={(el) => { mediaRefs.current[i] = el; }}
                                     style={{ zIndex: i === active ? 3 : i === prevActiveRef.current ? 2 : 1 }}
                                 >
                                     {p.image && <img src={p.image} alt={`${p.title} project screenshot`} loading="lazy" decoding="async" />}
@@ -158,14 +158,14 @@ const Projects = () => {
                             <div
                                 key={p.id}
                                 className={`proj-panel ${i === active ? 'is-active' : ''}`}
-                                ref={(el) => (panelRefs.current[i] = el)}
+                                ref={(el) => { panelRefs.current[i] = el; }}
                             >
                                 <p className="proj-label">Project {pad(i + 1)}</p>
                                 <h3 className="proj-title">{p.title}</h3>
                                 <p className="proj-desc">{p.description}</p>
                                 <div className="proj-tags">
                                     {p.tags.map((tag, ti) => (
-                                        <span key={ti} style={{ '--d': `${0.2 + ti * 0.07}s` }}>{tag}</span>
+                                        <span key={ti} style={{ '--d': `${0.2 + ti * 0.07}s` } as React.CSSProperties}>{tag}</span>
                                     ))}
                                 </div>
                                 <div className="proj-actions">

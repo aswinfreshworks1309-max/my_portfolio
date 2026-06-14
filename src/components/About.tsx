@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { defaultConfig } from '../data';
-import profile from '../assets/profile.min.jpg';
+import profile from '../assets/aswin-profile.min.jpg';
 const About = () => {
     const sectionRef = useRef(null);
     const [isVisible, setIsVisible] = useState(false);
